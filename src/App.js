@@ -9,50 +9,49 @@ class App extends Component {
 
   componentDidMount(){
     loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyD1DrDBUd6GNL2EIBCxK-K0OjkTny8kbuA&callback=initMap")
-    window.initMap = this.initMap;
+    window.initMap = this.processMap;
+    console.log(window.initMap);
   }
 
-  initMap = () => {
+
+  processMap = () => {
+    //incialización el mapa
     var map = new window.google.maps.Map(document.getElementById('map'), {
       center: {lat: -34.397, lng: 150.644},
       zoom: 8
     })
 
-
-
-
-
-
-    this.getData();
-    this.interval = setInterval(() =>{
-       this.getData();
-       console.log(this.state.datos);
-      }
-       , 5000);
+    var iconLink="https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png";
+    Marker(-34.397,150.644,iconLink);
+    Marker(-34.490,150.640);
     
-    var marker = new window.google.maps.Marker({
-      position: {lat: -34.397, lng: 150.644},
-      map: map,
-      title: 'Hello World!'
-    });
-  }
-  
+    
+    
+    
+    function Marker(lat,lng,iconLink) {
+      var marker = new window.google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: map,
+        title: 'Hello World!',
+        icon:{
+          url     : iconLink,
+          size    : new window.google.maps.Size( 5, 5 ),
+          anchor  : new window.google.maps.Point( 3, 3 )
+        }
+      });
+    }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+    
 
-  getData = _ => {
-    fetch('http://3.95.47.65:4000')
-      .then(response => response.json())
-      .then(response => this.setState({ datos: response.data }))
-      .catch(err => console.error(err))
   }
 
   render(){
    
     return (
       <main>
+        <div>
+          <input type="button" ></input>
+        </div>
         <div id="map"></div>
       </main>
     );
