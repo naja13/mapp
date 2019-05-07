@@ -8,11 +8,10 @@ class App extends Component {
   }
 
   componentDidMount(){
-    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyD1DrDBUd6GNL2EIBCxK-K0OjkTny8kbuA&callback=initMap")
+    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDYNzG1CYSeQy-CEC3qAXca5-cmj-Cd6ho&libraries=drawing&callback=initMap")
     window.initMap = this.processMap;
     console.log(window.initMap);
   }
-
 
   processMap = () => {
     //incialización el mapa
@@ -20,6 +19,32 @@ class App extends Component {
       center: {lat: -34.397, lng: 150.644},
       zoom: 8
     })
+
+    var drawingManager = new window.google.maps.drawing.DrawingManager({
+      drawingControlOptions:{
+          drawingModes:['marker','circle']
+      }
+    });
+    drawingManager.setMap(map);
+
+    var circle=null;
+
+    window.google.maps.event.addListener(drawingManager,'overlaycomplete',function(event){
+
+        if(event.type==='circle'){
+            var center=event.overlay.getCenter();
+            circle={
+                radius:event.overlay.getRadius(),
+                center:{
+                    lat:center.lat(),
+                    long:center.lng()
+                },
+                overLay:event.overLay
+            }
+        }
+
+        console.log(circle.center.lat);
+      })
 
     var iconLink="https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png";
     Marker(-34.397,150.644,iconLink);
