@@ -5,7 +5,7 @@ import './App.css';
 
 var data = {};
 var uno = "2000-01-01 00:00:00";
-var dos = "2019-05-31 00:00:00";
+var dos = "2019-09-31 00:00:00";
 var mensajes = "0";
 var flightPath = [];
 var markersh = [];
@@ -44,8 +44,9 @@ class App extends Component {
 
     var circle = null;
 
-    window.google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-
+    new window.google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+      // event.setMap(null);
+      event.overlay.setMap(null);
       if (event.type === 'circle') {
         var center = event.overlay.getCenter();
         circle = {
@@ -84,8 +85,8 @@ class App extends Component {
       // 192.168.1.41
       // 3.95.47.65 aws
 
-      fetch('http://192.168.1.41:4000/ubicacion', {
-      // fetch('http://3.95.47.65:4000/Hist', {
+      // fetch('http://192.168.1.41:4000/ubicacion', {
+      fetch('http://3.95.47.65:4000/Hist', {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -157,7 +158,7 @@ class App extends Component {
               anchor: new window.google.maps.Point(3, 3)
             }
           });
-          markersh.push(marker);
+          markersh.push(markerh);
           ii = ii + 1;
         })
 
@@ -190,17 +191,14 @@ class App extends Component {
     document.getElementById("butoon_borrar").addEventListener("click", function () {
 
       console.log("Evento");
-
       flightPath.forEach(ft => {
         ft.setMap(null);
         console.log("Borra");
       })
-      console.log(markersh)
-
-
-      
-
-
+      markersh.forEach(mark => {
+        mark.setMap(null);
+        console.log("Borra");
+      })
 
     });
 
